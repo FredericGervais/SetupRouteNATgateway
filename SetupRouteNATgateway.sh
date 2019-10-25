@@ -16,8 +16,9 @@ do
   echo [$i] $OUTPUT
 done
 
-echo Please select the REGION in which to create the NAT instances [0-$i]:
-read selection
+
+read -p “Please select the REGION in which to create the NAT instances [0-$i]:” selection </dev/tty
+
 if  [[ $selection -lt 0 ]] || [[ $selection -gt $i ]]; then
   echo "Error, the number $selection is not between 0 and $i"
 fi
