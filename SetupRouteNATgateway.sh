@@ -28,7 +28,7 @@ fi
 #
 declare -a ZonesOfRegion
 ZonesOfRegion=($(gcloud compute zones list --filter="REGION:(${regions[$selection]})" --format="value(name)"))
-echo ${regions[*]}
+echo ${ZonesOfRegion[*]}
 
 read -p "Press [Enter] key to start backup..."
 
