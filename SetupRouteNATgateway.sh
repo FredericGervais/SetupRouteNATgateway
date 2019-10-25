@@ -1,4 +1,4 @@
-# Name: SetupRouteNATgateway
+# Name: SetupRouteNATgateway.sh
 # Author: Frederic Gervais
 #
 
@@ -28,6 +28,7 @@ fi
 #
 declare -a ZonesOfRegion
 ZonesOfRegion=($(gcloud compute zones list --filter="REGION:(${regions[$selection]})" --format="value(name)"))
+echo ${regions[*]}
 
 read -p "Press [Enter] key to start backup..."
 
