@@ -1,6 +1,8 @@
 # Name: SetupRouteNATgateway.sh
 # Author: Frederic Gervais
 #
+# Based on the instructions found here : https://cloud.google.com/vpc/docs/special-configurations#configuring_the_gateways
+#
 
 NatTag=no-ip
 
@@ -16,7 +18,10 @@ do
   echo [$i] $OUTPUT
 done
 
-read -p "Please select the REGION in which to create the NAT instances [0-$i]:" selection
+# This line necessary so that you can "curl | bash" the script
+exec 3<>/dev/tty
+read -u 3 -p "Please select the REGION in which to create the NAT instances [0-$i]:" selection
+
 
 if  [[ $selection -lt 0 ]] || [[ $selection -gt $i ]]; then
   echo "Error, the number $selection is not between 0 and $i"
@@ -37,7 +42,7 @@ gsutil cp gs://nat-gw-template/startup.sh .
 echo Creating Health Check ...
 gcloud compute health-checks create http nat-health-check --check-interval 30 --healthy-threshold 1 --unhealthy-threshold 5 --request-path /health-check --no-user-output-enabled
 
-echo Adding firewall rule to allow Health Checks ...
+echo Adding firewall rule to allow Health Checks
 gcloud compute firewall-rules create "natfirewall" --allow tcp:80 --target-tags natgw --source-ranges "130.211.0.0/22","35.191.0.0/16" --no-user-output-enabled
 
 i=1
@@ -82,3 +87,6 @@ do
 done
 
 echo The script has completed
+
+
+
